@@ -1,114 +1,197 @@
-import fs from "fs";
+const fs = require("fs");
 
-export default class ProductManager {
+class ProductManager {
   constructor(path) {
     this.path = path;
-    this.products = [];
-    this.exists = false;
   }
 
-  async checkExists() {
-    let exists = true;
-    try {
-      await fs.promises.access(this.path, fs.constants.F_OK);
-    } catch (e) {
-      exists = false;
+  addProduct = async (
+    setTitle,
+    setDescription,
+    setPrice,
+    setThumbnail,
+    setCode,
+    setStock
+  ) => {
+    // FUNCIONA
+    const product = {
+      title: setTitle,
+      description: setDescription,
+      price: setPrice,
+      thumbnail: setThumbnail,
+      code: setCode,
+      stock: setStock,
+    };
+
+    let valid = true;
+
+    if (
+      (setTitle &&
+        setDescription &&
+        setPrice &&
+        setThumbnail &&
+        setStock &&
+        setCode) == undefined
+    ) {
+      console.log("Some data is missing");
+      valid = false;
     }
-    this.exists = exists;
-    return exists;
-  }
-
-  async getProducts() {
-    try {
-      if (this.exists === false) {
-        let exists = await this.checkExists();
-        if (exists === false) {
-          await fs.promises.writeFile(this.path, "[]");
-          this.exists = true;
-        }
-      }
-      let prods = await fs.promises.readFile(this.path, "utf-8");
-      this.products = JSON.parse(prods);
-      return this.products;
-    } catch (e) {
-      throw new Error(e.message);
+    if (
+      (setTitle.trim() &&
+        setDescription.trim() &&
+        setThumbnail.trim() &&
+        setCode.trim()) == 0
+    ) {
+      console.log(`Some data is empty so the product won't be created`);
+      valid = false;
     }
-  }
-
-  async getMaxId() {
-    try {
-      await this.getProducts();
-      const ids = this.products.map((el) => el.id);
-      if (ids.length === 0) {
-        return 0;
-      }
-      return Math.max(...ids);
-    } catch (e) {
-      throw new Error(e);
+    if (typeof setPrice != "number" || typeof setStock != "number") {
+      console.log(
+        `Stock and price need to be numbers so ${setTitle} won't be created`
+      );
+      valid = false;
     }
-  }
 
-  async addProduct(title, description, price, thumbnail, code, stock) {
-    try {
-      if (title && description && price && thumbnail && code && stock) {
-        let id = await this.getMaxId();
-        if (this.products.some((el) => el.code === code)) {
-          throw new Error(`A product with the code ${code} alredy exists`);
-        }
-        const product = {
-          id: id + 1,
-          title: title,
-          description: description,
-          price: price,
-          thumbnail: thumbnail,
-          code: code,
-          stock: stock,
-        };
-        this.products.push(product);
-        await fs.promises.writeFile(this.path, JSON.stringify(this.products));
-        return product;
+    if (valid) {
+      if (fs.existsSync(`${this.path}dataBase.json`)) {
+        // Si el archivo existe, se lee y añade el dato
+        let objects = await JSON.parse(
+          fs.readFileSync(`${this.path}dataBase.json`, "utf-8")
+        );
+        let lastProduct = await objects.pop();
+        objects.push(lastProduct);
+        product.id = (await lastProduct.id) + 1;
+
+        objects.push(product);
+
+        objects = JSON.stringify(objects);
+        fs.writeFileSync(`${this.path}dataBase.json`, objects);
       } else {
-        throw new Error("All fields are required");
+        // Si no existe, se crea con el producto directamente
+        console.log(
+          "No se encontró el archivo, por lo que se ha creado uno nuevo"
+        );
+        product.id = 0;
+        let objects = [product];
+
+        objects = await JSON.stringify(objects);
+        await fs.writeFileSync(`${this.path}dataBase.json`, objects);
       }
-    } catch (e) {
-      throw new Error(e);
     }
-  }
+  };
 
-  async getProductById(id) {
-    await this.getProducts();
-    const product = this.products.find((el) => el.id === id);
-    if (product) {
-      return product;
-    }
-    return null;
-  }
-
-  async updateProduct(id, newProduct) {
-    await this.getProducts();
-    const product = this.products.find((el) => el.id === id);
-    if (product) {
-      product.title = newProduct?.title || product.title;
-      product.description = newProduct?.description || product.description;
-      product.price = newProduct?.price || product.price;
-      product.thumbnail = newProduct?.thumbnail || product.thumbnail;
-      product.stock = newProduct?.stock || product.stock;
-      const products = this.products.map((el) => (el.id === id ? product : el));
-      await fs.promises.writeFile(this.path, JSON.stringify(products));
-      return product;
+  getProducts = async () => {
+    // FUNCIONA
+    if (fs.existsSync(`${this.path}dataBase.json`)) {
+      // Si el archivo existe, se lee y añade el dato
+      const objects = await JSON.parse(
+        fs.readFileSync(`${this.path}dataBase.json`, "utf-8")
+      );
+      console.log(objects);
     } else {
-      throw new Error(`The product with id ${id} does not exist`);
+      // Si no existe, se crea el archivo con el producto directamente
+      console.log("No se encontró el archivo");
     }
-  }
+  };
 
-  async deleteProduct(id) {
-    await this.getProducts();
-    const product = this.products.find((el) => el.id === id);
-    if (product) {
-      const products = this.products.filter((el) => el.id !== id);
-      await fs.promises.writeFile(this.path, JSON.stringify(products));
+  getProductById = async (id) => {
+    // FUNCIONA
+    if (fs.existsSync(`${this.path}dataBase.json`)) {
+      const objects = await JSON.parse(
+        fs.readFileSync(`${this.path}dataBase.json`)
+      );
+
+      let idToSearch = (element) => element.id === id;
+      let position = await objects.findIndex(idToSearch);
+      if (position == -1) {
+        console.log("No se encuentra ningún producto con ese ID");
+      } else {
+        console.log(objects[position]);
+      }
     } else {
-      throw new Error(`The product with id ${id} does not exist`);
+      console.log("No se encontró el archivo");
     }
-  }
+  };
+
+  updateProduct = async (
+    id,
+    setTitle,
+    setDescription,
+    setPrice,
+    setThumbnail,
+    setCode,
+    setStock
+  ) => {
+    // FUNCIONA
+    let product = {
+      title: setTitle,
+      description: setDescription,
+      price: setPrice,
+      thumbnail: setThumbnail,
+      code: setCode,
+      stock: setStock,
+    };
+
+    if (fs.existsSync(`${this.path}dataBase.json`)) {
+      let objects = await JSON.parse(
+        fs.readFileSync(`${this.path}dataBase.json`)
+      );
+
+      let idToSearch = (element) => element.id === id;
+      let position = await objects.findIndex(idToSearch);
+
+      if (position === -1) {
+        console.log("No se encuentra ningun producto con esa ID");
+      } else {
+        product.id = objects[position].id;
+
+        objects.splice(position, 1, product);
+        console.log(objects);
+
+        objects = JSON.stringify(objects);
+        fs.writeFileSync(`${this.path}dataBase.json`, objects);
+      }
+    } else {
+      console.log("No se encontró el archivo");
+    }
+  };
+
+  deleteProduct = async (id) => {
+    // FUNCIONA
+    if (fs.existsSync(`${this.path}dataBase.json`)) {
+      let objects = await JSON.parse(
+        fs.readFileSync(`${this.path}dataBase.json`)
+      );
+
+      let idToSearch = (element) => element.id === id;
+      let position = await objects.findIndex(idToSearch);
+
+      if (position === -1) {
+        console.log("No se encuentra ningún producto con esa ID");
+      } else {
+        objects.splice(position, 1);
+      }
+
+      if (objects.length == 0) {
+        await fs.unlinkSync(`${this.path}dataBase.json`, objects);
+      } else {
+        objects = JSON.stringify(objects);
+        await fs.writeFileSync(`${this.path}dataBase.json`, objects);
+      }
+    } else {
+      console.log("No se encontró el archivo");
+    }
+  };
 }
+
+const pm = new ProductManager("./");
+
+// pm.addProduct("Samsung", "J7", 30, "ubicacionImagen.txt", "ab04", 15);
+
+pm.getProductById(19);
+
+pm.getProducts();
+
+pm.updateProduct(2, "Motorola", "E20", 40, "ubicacionArchivo.txt", "ab30", 20);
+
+pm.deleteProduct(3);
