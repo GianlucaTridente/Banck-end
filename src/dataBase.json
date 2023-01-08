@@ -1,0 +1,92 @@
+[
+  {
+    "title": "Samsung",
+    "description": "J7",
+    "price": 30,
+    "thumbnail": "ubicacionImagen.txt",
+    "code": "ab04",
+    "stock": 15,
+    "id": 0
+  },
+  {
+    "title": "Samsung",
+    "description": "J7",
+    "price": 30,
+    "thumbnail": "ubicacionImagen.txt",
+    "code": "ab04",
+    "stock": 15,
+    "id": 1
+  },
+  {
+    "title": "Samsung",
+    "description": "J7",
+    "price": 30,
+    "thumbnail": "ubicacionImagen.txt",
+    "code": "ab04",
+    "stock": 15,
+    "id": 2
+  },
+  {
+    "title": "Samsung",
+    "description": "J7",
+    "price": 30,
+    "thumbnail": "ubicacionImagen.txt",
+    "code": "ab04",
+    "stock": 15,
+    "id": 3
+  },
+  {
+    "title": "Samsung",
+    "description": "J7",
+    "price": 30,
+    "thumbnail": "ubicacionImagen.txt",
+    "code": "ab04",
+    "stock": 15,
+    "id": 4
+  },
+  {
+    "title": "Samsung",
+    "description": "J7",
+    "price": 30,
+    "thumbnail": "ubicacionImagen.txt",
+    "code": "ab04",
+    "stock": 15,
+    "id": 5
+  },
+  {
+    "title": "Samsung",
+    "description": "J7",
+    "price": 30,
+    "thumbnail": "ubicacionImagen.txt",
+    "code": "ab04",
+    "stock": 15,
+    "id": 6
+  },
+  {
+    "title": "Samsung",
+    "description": "J7",
+    "price": 30,
+    "thumbnail": "ubicacionImagen.txt",
+    "code": "ab04",
+    "stock": 15,
+    "id": 7
+  },
+  {
+    "title": "Samsung",
+    "description": "J7",
+    "price": 30,
+    "thumbnail": "ubicacionImagen.txt",
+    "code": "ab04",
+    "stock": 15,
+    "id": 8
+  },
+  {
+    "title": "Samsung",
+    "description": "J7",
+    "price": 30,
+    "thumbnail": "ubicacionImagen.txt",
+    "code": "ab04",
+    "stock": 15,
+    "id": 9
+  }
+]
