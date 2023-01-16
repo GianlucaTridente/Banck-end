@@ -1,33 +1,21 @@
-import productManager from "./productManager.js";
 import express from "express";
+import cartRouter from "./routes/cart.router.js";
+import productsRouter from "./routes/products.routes.js";
+import path from "path";
+
 const app = express();
-const pm = new productManager("./");
+
+import __dirname from "./utils.js";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.listen(8080, () => console.log("Servicio arriba en el puerto 8080"));
+app.use(express.static(path.join(__dirname, "./public"))); 
 
-app.get("/products", async (req, res) => {
-  // http://localhost:8080/products?limit=5
-  let consultas = req.query;
-
-  let array = await pm.getProducts();
-
-  if (!consultas.limit) {
-    res.send({ status: "Ok", message: array });
-  } else {
-    let limitedArray = array.slice(0, consultas.limit);
-    res.send({ status: "Ok", message: limitedArray });
-  }
+app.use("/api/carts", cartRouter); // localhost:8080/api/users se accede a lo de users.routes.js
+app.use("/api/products", productsRouter);
+app.get("/", (req, res) => {
+  res.send("Acceda a /api/carts o a /api/products");
 });
 
-app.get("/products/:pid", async (req, res) => {
-  // http://localhost:8080/products/1
-  let pid = req.params.pid;
-  pid = parseInt(pid);
-
-  let product = await pm.getProductById(pid);
-
-  res.send({ status: "Ok", message: product });
-});
+app.listen(8080, () => console.log("Server initiated in port 8080"));
