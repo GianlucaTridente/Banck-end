@@ -31,7 +31,6 @@ router.get("/:cid", async (req, res) => {
 });
 
 router.post("/:cid/product/:pid", async (req, res) => {
-  // EN TEORIA FUNCIONA
   let cartId = req.params.cid;
   let productId = req.params.pid;
   let response = await cm.addProductToCart(cartId, productId);
