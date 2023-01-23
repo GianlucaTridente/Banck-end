@@ -34,6 +34,7 @@ class ProductManager {
       const objects = await JSON.parse(
         fs.readFileSync(`${this.path}productos.json`, "utf-8")
       );
+      console.log(objects);
       return objects;
     } else {
       return false;

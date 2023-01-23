@@ -1,8 +1,8 @@
 import { Router } from "express";
-import fs from "fs";
 import ProductManager from "../productManager.js";
+import { io } from "../app.js";
 
-const pm = new ProductManager("./");
+const pm = new ProductManager("../");
 const router = Router();
 
 router.get("/", async (req, res) => {
@@ -67,6 +67,9 @@ router.post("/", async (req, res) => {
     } else {
       let response = await pm.addProduct(product);
       res.send({ status: 200, message: response });
+      let products = await pm.getProducts();
+      io.emit("products", products);
+      console.log(response);
     }
   }
 });
@@ -93,6 +96,8 @@ router.put("/:pid", async (req, res) => {
 
   let response = await pm.updateProduct(productId, query);
   res.send(response);
+  let products = await pm.getProducts();
+  io.emit("products", products);
 });
 
 router.delete("/:pid", async (req, res) => {
@@ -107,6 +112,8 @@ router.delete("/:pid", async (req, res) => {
       res.send({ status: 500, message: "Server cant find the file" });
     } else {
       res.send(response);
+      let products = await pm.getProducts();
+      io.emit("products", products);
     }
   }
 });

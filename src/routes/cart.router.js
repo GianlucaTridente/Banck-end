@@ -1,8 +1,7 @@
 import { Router } from "express";
-import fs from "fs";
 import CartManager from "../cartManager.js";
 
-const cm = new CartManager("./");
+const cm = new CartManager("../");
 const router = Router();
 
 router.post("/", async (req, res) => {
