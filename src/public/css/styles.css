@@ -1,0 +1,106 @@
+* {
+  margin: 0;
+  padding: 0;
+  color: rgb(255, 255, 255);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #1f2023;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #161515;
+  height: 95vh;
+}
+
+h1 {
+  margin: 20px;
+  font-size: medium;
+}
+
+#productsList {
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.product {
+  width: 14%;
+  border: 4px solid rgb(255, 255, 255);
+  border-radius: 10px;
+  background-color: #000000;
+  padding: 5px;
+}
+
+.product-img {
+  display: flex;
+  justify-content: center;
+}
+
+.product p {
+  color: yellow;
+}
+
+#chatZone {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  padding: 10px 0 0 10px;
+}
+
+#messageZone {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  position: absolute;
+  bottom: 0px;
+  background-color: black;
+  border-top: 3px solid rgb(144, 206, 0);
+  padding: 5px 0;
+  gap: 20px;
+}
+
+#messageZone input {
+  width: 90%;
+  color: black;
+  padding: 5px;
+  background-color: rgb(158, 158, 158);
+  outline: none;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  max-width: 60%;
+  overflow: hidden;
+  flex-wrap: wrap;
+  border: 3px solid rgb(144, 206, 0);
+  border-radius: 10px;
+  padding: 5px;
+  margin-bottom: 10px;
+  background-color: rgb(58, 58, 58);
+}
+
+.user {
+  font-size: 12px;
+}
+
+button {
+  background-color: rgb(41, 41, 41);
+  padding: 5px;
+  aspect-ratio: 1/1;
+  border: 3px solid rgb(144, 206, 0);
+}

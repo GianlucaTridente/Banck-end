@@ -26,6 +26,7 @@ class CartManager {
       carts = JSON.stringify(carts);
       fs.writeFileSync(`${this.path}carrito.json`, carts);
     } else {
+      e;
       let cart = {
         id: 0,
         objects: [],
@@ -56,6 +57,7 @@ class CartManager {
   };
 
   addProductToCart = async (cartId, productId) => {
+    // Funciona
     if (
       fs.existsSync(`${this.path}carrito.json`) &&
       fs.existsSync(`${this.path}productos.json`)
